@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import { stockData } from '../lib/StockData';
 
 export interface AppState {
   // Buy inputs
@@ -53,7 +54,8 @@ export const useStore = create<AppState>((set) => ({
   keyMoneyMonths: 1,
   agencyFeeMonths: 1,
   rentGrowthRate: 6.8,
-  investmentReturnRate: 5,
+  // Default to S&P 500 CAGR so initial graph reflects S&P 500
+  investmentReturnRate: stockData['S&P 500'].cagr,
   securityDepositMonths: 1,
   leaseRenewalFeeMonths: 1,
   capitalGainsTaxRateInvestment: 20,

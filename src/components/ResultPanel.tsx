@@ -25,10 +25,16 @@ const ResultPanel = () => {
   const finalRentNetWorth = rentNetWorth[state.timeHorizon];
   const difference = finalBuyNetWorth - finalRentNetWorth;
 
+  // Determine the first year when the ultimately better scenario becomes better
+  // This shows a break-even even if Renting is the winner (e.g., high-growth stocks like GOOGLE)
   const breakEvenYear = (() => {
-    for(let i = 0; i < buyNetWorth.length; i++) {
-      if (buyNetWorth[i] > rentNetWorth[i]) {
-        return i;
+    const targetIsBuy = finalBuyNetWorth >= finalRentNetWorth;
+    for (let i = 0; i < buyNetWorth.length; i++) {
+      const buy = buyNetWorth[i];
+      const rent = rentNetWorth[i];
+      if (targetIsBuy ? buy >= rent : rent >= buy) {
+        // Never show year 0; if advantage exists at start, show year 1
+        return Math.max(1, i);
       }
     }
     return 'N/A';
